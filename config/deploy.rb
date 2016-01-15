@@ -5,15 +5,6 @@ require 'mina/rbenv'
 require 'mina_sidekiq/tasks'
 require 'mina/unicorn'
 
-# require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
-# require 'mina/rvm'    # for rvm support. (http://rvm.io)
-
-# Basic settings:
-#   domain       - The hostname to SSH to.
-#   deploy_to    - Path to deploy into.
-#   repository   - Git repo to clone from. (needed by mina/git)
-#   branch       - Branch name to deploy. (needed by mina/git)
-
 set :rails_env, 'production'  
 set :domain,  '10.4.13.63'
 set :deploy_to, '/home/alif/www/todolist'
@@ -23,10 +14,6 @@ set :user,  'alif'
 set :forward_agent, true
 set :port,  '22'
 set :unicorn_pid, "#{deploy_to}/shared/pids/unicorn.pid"
-
-
-# For system-wide RVM install.
-#   set :rvm_path, '/usr/local/rvm/bin/rvm'
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.
@@ -40,7 +27,6 @@ set :shared_paths, ['config/database.yml', 'config/secrets.yml', 'log']
 task :set_proxy do
   queue 'echo "Setar proxy:"'
   queue "source ~/set_proxy.sh tjgo"
-  queue "echo $http_proxy"
 end
 
 # This task is the environment that is loaded for most commands, such as
@@ -50,12 +36,6 @@ task :environment do
   # Be sure to commit your .ruby-version or .rbenv-version to your repository.
   queue %{echo  "-----> Loading environment"}
   invoke :'rbenv:load'
-
-  queue  %{
-    echo  "-----> Seting environment variables."]
-    #{echo_cmd %[export http_proxy=http://jalvessantos:lina2906@10.0.10.50:8080]}
-    #{echo_cmd %[export https_proxy=http://jalvessantos:lina2906@10.0.10.50:8080]}
-  }
 
   # For those using RVM, use this to load an RVM version@gemset.
   # invoke :'rvm:use[ruby-1.9.3-p125@default]'
@@ -73,15 +53,17 @@ task :setup => [:set_proxy, :environment] do
     queue  %[echo  "-----> Be  sure  to  edit  'shared/config/database.yml'."]
     queue! %[touch "#{deploy_to}/shared/config/secrets.yml"]
     queue %[echo "-----> Be  sure  to  edit  'shared/config/secrets.yml'."]
+    
     # sidekiq needs a place to  store its pid file  and log file
     queue!  %[mkdir -p  "#{deploy_to}/shared/pids/"]
     queue!  %[chmod g+rx,u+rwx  "#{deploy_to}/shared/pids"]
+
     queue!  %[mkdir -p  "#{deploy_to}/shared/sockets"]
     queue!  %[chmod g+rx,u+rwx  "#{deploy_to}/shared/sockets"]
 end
 
 desc "Deploys the current version to the server."
-task :deploy => :environment do
+task :deploy => [:set_proxy, :environment] do
   to :before_hook do
     # Put things to run locally before ssh
   end
@@ -95,11 +77,11 @@ task :deploy => :environment do
     invoke  :'rails:assets_precompile'
     #invoke :'deploy:cleanup'
     to :launch do
-      invoke  :'sidekiq:restart'
-      invoke  :'unicorn:restart'
+      #invoke  :'sidekiq:restart'
+      #invoke  :'unicorn:restart'
 
-      queue "mkdir -p #{deploy_to}/#{current_path}/tmp/"
-      queue "touch #{deploy_to}/#{current_path}/tmp/restart.txt"
+      queue "mkdir -p #{deploy_to}/tmp/"
+      queue "touch #{deploy_to}/tmp/restart.txt"
     end
   end
 end
