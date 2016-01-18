@@ -77,8 +77,8 @@ task :deploy => [:set_proxy, :environment] do
     invoke  :'rails:assets_precompile'
     #invoke :'deploy:cleanup'
     to :launch do
-      #invoke  :'sidekiq:restart'
-      #invoke  :'unicorn:restart'
+      invoke  :'sidekiq:restart'
+      invoke  :'unicorn:restart'
 
       queue "mkdir -p #{deploy_to}/tmp/"
       queue "touch #{deploy_to}/tmp/restart.txt"
