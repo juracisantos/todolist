@@ -6,7 +6,7 @@ require 'mina_sidekiq/tasks'
 require 'mina/unicorn'
 
 set :rails_env, 'production'  
-set :domain,  '192.168.25.4'
+set :domain,  '10.4.13.63'
 set :deploy_to, '/home/alif/www/todolist'
 set :repository,  'https://github.com/juracisantos/todolist.git'
 set :branch,  'master'
@@ -77,8 +77,8 @@ task :deploy => [:set_proxy, :environment] do
     invoke  :'rails:assets_precompile'
     #invoke :'deploy:cleanup'
     to :launch do
-      invoke  :'sidekiq:restart'
-      invoke  :'unicorn:restart'
+      #invoke  :'sidekiq:restart'
+      #invoke  :'unicorn:restart'
 
       queue "mkdir -p #{deploy_to}/tmp/"
       queue "touch #{deploy_to}/tmp/restart.txt"
