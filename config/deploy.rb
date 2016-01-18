@@ -6,7 +6,7 @@ require 'mina_sidekiq/tasks'
 require 'mina/unicorn'
 
 set :rails_env, 'production'  
-set :domain,  '10.4.13.63'
+set :domain,  '192.168.25.4'
 set :deploy_to, '/home/alif/www/todolist'
 set :repository,  'https://github.com/juracisantos/todolist.git'
 set :branch,  'master'
