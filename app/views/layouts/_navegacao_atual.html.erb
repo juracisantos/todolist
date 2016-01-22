@@ -1,0 +1,24 @@
+<div class="breadcrumbs" id="breadcrumbs">
+	<ul class="breadcrumb">
+		<li>
+			<i class="icon-home home-icon"></i>
+			<%= link_to t("principal_path"), home_index_path %>
+
+			<span class="divider">
+				<i class="icon-angle-right arrow-icon"></i>
+			</span>
+		</li>
+
+		<% unless controller_name == "home" %>
+			<li>
+				<a href="/<%= controller_name %>"><%= texto_menu(controller_name) %></a>
+
+				<span class="divider">
+					<i class="icon-angle-right arrow-icon"></i>
+				</span>
+			</li>
+		<% end %>
+
+		<li class="active"><%= action_name %></li>
+	</ul><!--.breadcrumb-->
+</div>

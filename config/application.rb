@@ -8,6 +8,13 @@ Bundler.require(*Rails.groups)
 
 module Todolist
   class Application < Rails::Application
+    config.assets.paths << Rails.root.join("aceadmin/ace/js")
+    config.assets.paths << Rails.root.join("aceadmin/ace/css")
+    config.assets.paths << Rails.root.join("aceadmin/ace/font")
+    config.assets.paths << Rails.root.join("aceadmin/ace/img")
+
+    
+    
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

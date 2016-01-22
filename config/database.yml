@@ -6,3 +6,12 @@ development:
     username: postgres
     password: root
     host: localhost 
+
+production:
+    adapter: postgresql
+    encoding: utf8
+    database: todolist_development
+    pool: 5
+    username: postgres
+    password: root
+    host: localhost 

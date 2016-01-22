@@ -10,6 +10,13 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require ace/css/bootstrap.min
+ *= require ace/css/bootstrap-responsive.min
+ *= require ace/css/ace.min
+ *= require ace/css/ace-responsive.min
+ *= require ace/css/ace-skins.min
+ *= require ace/css/font-awesome.min
+ *
  *= require_tree .
  *= require_self
  */
